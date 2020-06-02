@@ -43,7 +43,6 @@ function showPage(list, page) {
 
   list.forEach(function (item, index) {
     if (index >= start && index <= stop) {
-      // console.log(index);
       return;
     } else {
       item.style.display = "none";
@@ -51,7 +50,7 @@ function showPage(list, page) {
   });
 }
 
-showPage(students, 6);
+showPage(students, 1);
 
 /*** 
    Create the `appendPageLinks function` to generate, append, and add 
@@ -59,13 +58,23 @@ showPage(students, 6);
 ***/
 
 function appendPageLinks(list) {
-   let numberOfPages = list.length / 10;
+   let numberOfPages = Math.floor(list.length / 10);
 
    let pages = document.createElement("div");
    pages.className = "pagination";
 
    document.querySelector(".page").append(pages);
+   let pageList = document.createElement("ul");
+   pages.append(pageList);
 
+   for (let i = 1; i <= numberOfPages; i++) {
+      let pageItem = document.createElement("li");
+      let pagelink = document.createElement("a");
+      pagelink.textContent = i;
+      pagelink.href = "#"
+      pageItem.appendChild(pagelink);
+      pageList.appendChild(pageItem);
+   }
 }
 
 appendPageLinks(students);
