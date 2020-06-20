@@ -15,7 +15,7 @@ function showPage(list, page) {
 }
 
 function appendPageLinks(list) {
-   let numberOfPages = Math.floor(list.length / itemsPerPage);
+   let numberOfPages = Math.ceil(list.length / itemsPerPage);
 
    let pages = document.createElement("div");
    pages.className = "pagination";
@@ -38,7 +38,7 @@ function appendPageLinks(list) {
         pagelink.className = "active";
       }
 
-      pagelink.addEventListener('click', (event) => {
+      pagelink.addEventListener("click", (event) => {
         let items = pageList.getElementsByTagName("a");
 
         for (let i = 0; i < items.length; i++) {
@@ -52,5 +52,32 @@ function appendPageLinks(list) {
    }
 }
 
+function addSearch() {
+  let studentSearch = document.createElement("div");
+  studentSearch.className = "student-search";
+
+  let searchInput = document.createElement("input");
+  searchInput.placeholder = "Search for students...";
+
+  let searchButton = document.createElement("button");
+  searchButton.textContent = "Search";
+
+  studentSearch.appendChild(searchInput);
+  studentSearch.appendChild(searchButton);
+
+  document.querySelector(".page-header").appendChild(studentSearch);
+
+  searchInput.addEventListener("keyup", (event) => {
+    event.preventDefault();
+    // console.log("it works");
+  })
+
+  searchButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    // console.log("it works too");
+  });
+}
+
 showPage(students, 1);
 appendPageLinks(students);
+addSearch();
