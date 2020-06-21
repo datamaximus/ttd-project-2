@@ -1,5 +1,7 @@
 const students = document.querySelectorAll(".student-list li");
 const itemsPerPage = 10;
+let pages = document.createElement("div");
+let noResultsText = document.createElement("h3");
 
 function showPage(list, page) {
   let start = (page * itemsPerPage) - itemsPerPage;
@@ -15,41 +17,41 @@ function showPage(list, page) {
 }
 
 function appendPageLinks(list) {
-   let numberOfPages = Math.ceil(list.length / itemsPerPage);
+  let numberOfPages = Math.ceil(list.length / itemsPerPage);
 
-   let pages = document.createElement("div");
-   pages.className = "pagination";
 
-   document.querySelector(".page").append(pages);
-   let pageList = document.createElement("ul");
-   pages.append(pageList);
+  pages.className = "pagination";
 
-   for (let i = 1; i <= numberOfPages; i++) {
-      let pageItem = document.createElement("li");
+  document.querySelector(".page").append(pages);
+  let pageList = document.createElement("ul");
+  pages.append(pageList);
 
-      let pagelink = document.createElement("a");
-      pagelink.textContent = i;
-      pagelink.href = "#"
+  for (let i = 1; i <= numberOfPages; i++) {
+    let pageItem = document.createElement("li");
 
-      pageItem.appendChild(pagelink);
-      pageList.appendChild(pageItem);
+    let pagelink = document.createElement("a");
+    pagelink.textContent = i;
+    pagelink.href = "#"
 
-      if (i == 1) {
-        pagelink.className = "active";
+    pageItem.appendChild(pagelink);
+    pageList.appendChild(pageItem);
+
+    if (i == 1) {
+      pagelink.className = "active";
+    }
+
+    pagelink.addEventListener("click", (event) => {
+      let items = pageList.getElementsByTagName("a");
+
+      for (let i = 0; i < items.length; i++) {
+        items[i].classList.remove("active");
       }
 
-      pagelink.addEventListener("click", (event) => {
-        let items = pageList.getElementsByTagName("a");
+      event.target.className = "active";
 
-        for (let i = 0; i < items.length; i++) {
-          items[i].classList.remove("active");
-        }
-
-        event.target.className = "active";
-
-        showPage(list, parseInt(event.target.text));
-      });
-   }
+      showPage(list, parseInt(event.target.text));
+    });
+  }
 }
 
 function addSearch() {
@@ -80,7 +82,21 @@ function addSearch() {
       }
     })
 
-    showPage(filteredStudentList, 1);
+    pages.innerHTML = '';
+    pages.remove();
+
+    if (filteredStudentList.length == 0) {
+      document.querySelector(".page").appendChild(noResultsText);
+      noResultsText.innerHTML = "There are no matching search results";
+      showPage(filteredStudentList, 1);
+    } 
+    
+    else {
+      noResultsText.innerHTML = '';
+      showPage(filteredStudentList, 1);
+      appendPageLinks(filteredStudentList);
+    }
+
   })
 
   searchButton.addEventListener("click", (event) => {
@@ -95,8 +111,10 @@ function addSearch() {
       }
     })
 
+    pages.innerHTML = '';
+    pages.remove();
     showPage(filteredStudentList, 1);
-
+    appendPageLinks(filteredStudentList);
   });
 }
 
