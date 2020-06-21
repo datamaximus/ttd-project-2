@@ -1,4 +1,4 @@
-let students = document.querySelectorAll(".student-list li");
+const students = document.querySelectorAll(".student-list li");
 const itemsPerPage = 10;
 
 function showPage(list, page) {
@@ -7,7 +7,7 @@ function showPage(list, page) {
 
   list.forEach(function (item, index) {
     if (index >= start && index < stop) {
-      item.style.display = "block";
+      item.style.display = null;
     } else {
       item.style.display = "none";
     }
@@ -47,7 +47,7 @@ function appendPageLinks(list) {
 
         event.target.className = "active";
 
-        showPage(students, parseInt(event.target.text));
+        showPage(list, parseInt(event.target.text));
       });
    }
 }
@@ -69,12 +69,34 @@ function addSearch() {
 
   searchInput.addEventListener("keyup", (event) => {
     event.preventDefault();
-    // console.log("it works");
+
+    let filterText = searchInput.value;
+    let filteredStudentList = [];
+    students.forEach((student) => {
+      student.style.display = "none";
+      let name = student.getElementsByTagName("h3")[0].textContent;
+      if (name.indexOf(filterText) > -1) {
+        filteredStudentList.push(student);
+      }
+    })
+
+    showPage(filteredStudentList, 1);
   })
 
   searchButton.addEventListener("click", (event) => {
     event.preventDefault();
-    // console.log("it works too");
+    let filterText = searchInput.value;
+    let filteredStudentList = [];
+    students.forEach((student) => {
+      student.style.display = "none";
+      let name = student.getElementsByTagName("h3")[0].textContent;
+      if (name.indexOf(filterText) > -1) {
+        filteredStudentList.push(student);
+      }
+    })
+
+    showPage(filteredStudentList, 1);
+
   });
 }
 
